@@ -23,4 +23,4 @@ Para rodar este projeto localmente, siga os passos abaixo:
 
 1. **Clone este repositório:**
    ```bash
-   git clone [https://github.com/beatrizbcserra/api-testing-jsonplaceholder.git](https://github.com/beatrizbcserra/api-testing-jsonplaceholder.git)
+   git clone [https://github.com/beatrizbcserra/api-testing-jsonplaceholder.git]
