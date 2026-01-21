@@ -1,0 +1,74 @@
+{
+  "info": {
+    "_postman_id": "6d93a293-967e-449f-9305-6cec273a80e2",
+    "name": "01 - Smoke Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50113133",
+    "_collection_link": "https://go.postman.co/collection/50113133-6d93a293-967e-449f-9305-6cec273a80e2?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "All Posts (Smoke Test)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Validar status code\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Validar tempo de resposta\r",
+              "pm.test(\"Response time is less than 500ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+              "});\r",
+              "\r",
+              "// Validar que retorna array\r",
+              "pm.test(\"Response is an array\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.be.an('array');\r",
+              "});\r",
+              "\r",
+              "// Validar quantidade mínima de posts\r",
+              "pm.test(\"Response contains at least 10 posts\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.length).to.be.at.least(10);\r",
+              "});\r",
+              "\r",
+              "// Validar estrutura do primeiro post\r",
+              "pm.test(\"First post has required fields\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    const firstPost = jsonData[0];\r",
+              "    pm.expect(firstPost).to.have.property('userId');\r",
+              "    pm.expect(firstPost).to.have.property('id');\r",
+              "    pm.expect(firstPost).to.have.property('title');\r",
+              "    pm.expect(firstPost).to.have.property('body');\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/posts",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "posts"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

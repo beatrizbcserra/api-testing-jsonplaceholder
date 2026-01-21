@@ -1,0 +1,162 @@
+{
+  "info": {
+    "_postman_id": "3f9c1f53-969b-4eac-80fd-48d821e390c9",
+    "name": "04 - Negative Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50113133",
+    "_collection_link": "https://go.postman.co/collection/50113133-3f9c1f53-969b-4eac-80fd-48d821e390c9?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Non-existent Post (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is empty object\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(Object.keys(jsonData).length).to.eql(0);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/posts/99999",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "posts",
+            "99999"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Invalid Data (Missing Required Fields)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// JSONPlaceholder aceita qualquer POST, então validamos se retorna 201\r",
+              "// Em API real, isso retornaria 400\r",
+              "pm.test(\"Status code is 201 (JSONPlaceholder allows incomplete data)\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Document incomplete data scenario\", function () {\r",
+              "    console.log(\"Note: Real APIs should return 400 Bad Request for missing required fields\");\r",
+              "    pm.expect(true).to.be.true; // Teste de documentação\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"title\": \"UserId e body não encontrado\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/posts",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "posts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Invalid JSON Format",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"API accepts invalid data types (document this behavior)\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    console.log(\"Data type validation should be implemented in real APIs\");\r",
+              "    pm.expect(jsonData).to.have.property('id');\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"userId\": \"abc\",\r\n    \"title\": 12345,\r\n    \"body\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/posts",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "posts"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "info": {
+    "_postman_id": "9939ebe4-721b-4cbe-9ecd-373ca6dd11ff",
+    "name": "03 - Schema Validation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50113133",
+    "_collection_link": "https://go.postman.co/collection/50113133-9939ebe4-721b-4cbe-9ecd-373ca6dd11ff?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Validate Post Schema",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Definir schema esperado\r",
+              "const postSchema = {\r",
+              "    \"type\": \"object\",\r",
+              "    \"required\": [\"userId\", \"id\", \"title\", \"body\"],\r",
+              "    \"properties\": {\r",
+              "        \"userId\": { \"type\": \"number\" },\r",
+              "        \"id\": { \"type\": \"number\" },\r",
+              "        \"title\": { \"type\": \"string\", \"minLength\": 1 },\r",
+              "        \"body\": { \"type\": \"string\", \"minLength\": 1 }\r",
+              "    }\r",
+              "};\r",
+              "\r",
+              "pm.variables.set(\"postSchema\", JSON.stringify(postSchema));"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Validação manual de schema\r",
+              "pm.test(\"Response matches Post schema\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    const schema = JSON.parse(pm.variables.get(\"postSchema\"));\r",
+              "    \r",
+              "    // Verificar propriedades obrigatórias\r",
+              "    schema.required.forEach(field => {\r",
+              "        pm.expect(jsonData).to.have.property(field);\r",
+              "    });\r",
+              "    \r",
+              "    // Verificar tipos\r",
+              "    pm.expect(jsonData.userId).to.be.a('number');\r",
+              "    pm.expect(jsonData.id).to.be.a('number');\r",
+              "    pm.expect(jsonData.title).to.be.a('string');\r",
+              "    pm.expect(jsonData.body).to.be.a('string');\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Title and body are not empty\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.title.length).to.be.above(0);\r",
+              "    pm.expect(jsonData.body.length).to.be.above(0);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/posts/1",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "posts",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
